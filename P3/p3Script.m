@@ -29,18 +29,19 @@ elem = [(1:n)',(2:n1)'];   %connectivity matrix
 numNodes = size(nodes,1);
 numElem = size(elem,1);
 
-K = zeros(n1);
-F = zeros(n1,1);
+K = zeros(n1);         %Space for stiffness marix K
+F = zeros(n1,1);       %Space for internal forces vector F 
 Q = zeros(n1,1);
 
+K0 = a0*h*[2,1;1,2]/6; %The same for all the elements
+
 for e=1:numElem
-    rows = [elem(e,1), elem(e,2)];
-    cols = rows;
+    rows = elem(e,:); cols = rows;
     x1 = nodes(rows(1,1),1); x2 = nodes(rows(1,2),1);
-    Ke = (tan(x2)-tan(x1))*[1, -1;-1, 1]/h^2 + a0*h*[2,1;1,2]/6;
+    Ke = (tan(x2)-tan(x1))*[1, -1;-1, 1]/h^2 + K0; 
     Fe = h*[2*x1+x2; x1+2*x2]/6;
-    K(rows,cols) = K(rows,cols) + Ke;
-    F(rows)=F(rows)+Fe;
+    K(rows,cols) = K(rows,cols) + Ke; %Assembly of K
+    F(rows)=F(rows)+Fe;               %Assembly of F
 end
 
 %BC
