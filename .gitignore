@@ -225,3 +225,6 @@ TSWLatexianTemp*
 
 # Matlab's asv
 *.asv
+
+# Exclude .DS_Store: Desktop Services Store (macOS)
+.DS_Store
